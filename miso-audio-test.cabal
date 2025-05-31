@@ -6,7 +6,7 @@ executable app
   hs-source-dirs:       src
   main-is:              Main.hs
   other-modules:        Audio
-  build-depends:        base, jsaddle, miso, time
+  build-depends:        base, jsaddle, miso, time, lens
   default-language:     GHC2021
   ghc-options:          -Wall -no-hs-main -optl-mexec-model=reactor "-optl-Wl,--export=hs_start"
   cpp-options:          -DWASM

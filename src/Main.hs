@@ -7,7 +7,7 @@ import Data.Bool (bool)
 import Data.Time.Clock (DiffTime)
 import Data.Time.Format
 import Language.Javascript.JSaddle (JSVal(..))
-import Miso 
+import Miso hiding (set)
 import Miso.Lens
 import Miso.String (MisoString, ms, fromMisoStringEither)
 
@@ -172,17 +172,17 @@ handleUpdate (ActionAskVolume str) =
     mPlaying <- use modelPlaying
     forM_ mPlaying $ \p -> do
       io_ (setVolume (p^.playingSong^.songAudio) vol)
-      modelPlaying %= fmap (\p' -> p' & playingVolume .~ vol)
+      modelPlaying %= fmap (set playingVolume vol)
 
-handleUpdate (ActionSetVolume vol) = 
+handleUpdate (ActionSetVolume vol) = do
   -- modelPlaying . playingVolume ?= vol
-  modelPlaying %= fmap (\p -> p & playingVolume .~ vol)
+  modelPlaying %= fmap (set playingVolume vol)
 
 handleUpdate (ActionSetEnded end) =
-  modelPlaying %= fmap (\p -> p & playingEnded .~ end)
+  modelPlaying %= fmap (set playingEnded end)
 
 handleUpdate (ActionSetDuration t) = 
-  modelPlaying %= fmap (\p -> p & playingDuration .~ realToFrac t)
+  modelPlaying %= fmap (set playingDuration $ realToFrac t)
 
 ----------------------------------------------------------------------
 -- main
